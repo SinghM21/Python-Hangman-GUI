@@ -45,7 +45,7 @@ def guess(word):
     word = word.lower()
     duplicate_chars = 0
     guessed_word = '_' * (len(word) - 1)
-    print("The letter has {} characters".format(len(guessed_word)))
+    print("The word has {} characters".format(len(guessed_word)))
     
     # Find the number of duplicate characters
     for i in range(len(word) - 1):

@@ -5,7 +5,7 @@ mango
 pineapple
 watermelon
 strawberry
-rasberry
+raspberry
 blueberry
 cherry
 grapes
