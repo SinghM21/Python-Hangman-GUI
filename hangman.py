@@ -1,18 +1,4 @@
 import random
-import PyQt5.QtWidgets
-from PyQt5.QtWidgets import QApplication, QMainWindow
-import sys
-
-# Basic PyQt5 window
-def window():
-    app = QApplication(sys.argv)
-    win = QMainWindow()
-    # X, Y, Height, Width
-    win.setGeometry(650, 300, 640, 480)
-    win.setWindowTitle("Hangman")
-
-    win.show()
-    sys.exit(app.exec())
 
 # Load the words from the word.txt file into an list
 def load_words():
@@ -116,7 +102,6 @@ def guess(word):
         print("You used these letters {} to guess the word: {}".format(letters_guessed, word))
 
 def main():
-    window()
     word_list = load_words()
     chosen_word = pick_word(word_list)
     guess(chosen_word)
