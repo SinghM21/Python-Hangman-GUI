@@ -1,5 +1,18 @@
 import random
 
+#Contains key information about the player
+class PlayerStats:
+    def __init__(self):
+        self.player_lives = 6
+
+    @property
+    def lives(self):
+        return self.player_lives
+
+    @lives.setter
+    def lives(self, a): 
+        return self.player_lives - a 
+
 # Load the words from the word.txt file into an list
 def load_words():
     word_list = []
@@ -35,13 +48,13 @@ def update_guessed_word(current_word, character, word):
     
     return new_word_state
 
+player = PlayerStats()
 # Prompts and processes the guesses that the
 # user makes
 def guess(word):
     word = word.lower()
     duplicate_chars = 0
     guessed_word = '_' * (len(word) - 1)
-    print("The word has {} characters".format(len(guessed_word)))
     
     # Find the number of duplicate characters
     for i in range(len(word) - 1):
@@ -50,13 +63,12 @@ def guess(word):
                 duplicate_chars += 1
                 break
    
-    player_lives = 6
     letters_correct = 0
     # List of letters guessed
     letters_guessed = []
 
     # While the player still have lives
-    while player_lives > 0:
+    while player.player_lives > 0:
         current_letters_correct = 0
         repeated_letters = 0
         guess = input("Enter a letter: ")
@@ -76,7 +88,7 @@ def guess(word):
             elif guess in letters_guessed:
                 repeated_letters += 1
 
-        if player_lives == 0 or letters_correct == (len(word) - 1) - duplicate_chars:
+        if player.player_lives == 0 or letters_correct == (len(word) - 1) - duplicate_chars:
             break
 
         elif current_letters_correct > 0:
@@ -91,10 +103,10 @@ def guess(word):
         elif current_letters_correct == 0:
             letters_guessed.append(guess)
             print("You guessed a wrong letter! Try again!")
-            player_lives -= 1
-            print("You now have {} lives".format(player_lives))
+            player.player_lives -= 1
+            print("You now have {} lives".format(player.player_lives))
     
-    if player_lives == 0:
+    if player.player_lives == 0:
         print("Game over, you lose!")
         print("The word was", word.lower())
     elif letters_correct == (len(word) - 1) - duplicate_chars:
@@ -104,6 +116,7 @@ def guess(word):
 def main():
     word_list = load_words()
     chosen_word = pick_word(word_list)
+    print("The word has {} characters".format(len(chosen_word)))
     guess(chosen_word)
 
 if __name__ == "__main__":

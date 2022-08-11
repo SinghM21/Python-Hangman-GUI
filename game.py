@@ -1,3 +1,4 @@
+import random
 import sys
 from PySide6 import QtCore, QtWidgets, QtGui
 from PySide6.QtWidgets import (QLineEdit, QPushButton, QDialog)
@@ -20,12 +21,13 @@ class MyApp(QtWidgets.QWidget):
         self.layout.addWidget(self.button)
 
         # On button click, execute guess function
-        self.button.clicked.connect(self.guess)
+        self.button.clicked.connect(self.guess_inputted)
 
-    def guess(self):
+    def guess_inputted(self):
         self.text.setText(self.edit.text())
-
+    
 def main():
+
     # Create window constraints, then display window
     app = QtWidgets.QApplication([])
     widget = MyApp()
