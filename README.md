@@ -3,6 +3,6 @@
 
 This is an open-source project developed with the aim of learning a GUI framework available in python.
 
-- [x] test
-- [ ] test
-- [ ] test
+ [x] test
+ [ ] test
+ [ ] test
