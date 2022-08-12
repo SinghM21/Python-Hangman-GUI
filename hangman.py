@@ -51,7 +51,14 @@ def update_guessed_word(current_word, character, word):
 player = PlayerStats()
 # Prompts and processes the guesses that the
 # user makes
-def guess(word):
+def take_guess(char):
+    guess = char
+    if (len(guess) != 1):
+        print("Enter guess again!")
+    return guess
+
+def process_guess(word, guessed_char):
+    guess = guessed_char
     word = word.lower()
     duplicate_chars = 0
     guessed_word = '_' * (len(word) - 1)
@@ -71,14 +78,7 @@ def guess(word):
     while player.player_lives > 0:
         current_letters_correct = 0
         repeated_letters = 0
-        guess = input("Enter a letter: ")
         guess = guess.lower()
-
-        while len(guess) != 1:
-            print("You can only enter a single character! ")
-            guess = input("Enter a letter: ")
-            guess = guess.lower()
-
 
         for x in range(len(word) - 1):
             if guess == word[x] and guess not in letters_guessed:
@@ -117,7 +117,6 @@ def main():
     word_list = load_words()
     chosen_word = pick_word(word_list)
     print("The word has {} characters".format(len(chosen_word)))
-    guess(chosen_word)
 
 if __name__ == "__main__":
     main()
