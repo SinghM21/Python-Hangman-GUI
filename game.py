@@ -9,6 +9,10 @@ from PySide6.QtWidgets import (QLineEdit, QPushButton, QDialog)
 class MyApp(QtWidgets.QWidget):
     def __init__(self):
         super().__init__()
+        # Pick word for hangman
+        self.word_list = hangman.load_words()
+        self.chosen_word = hangman.pick_word(self.word_list)
+
         # Create widgets
         self.text = QtWidgets.QLabel("No letter entered", alignment = QtCore.Qt.AlignCenter)
         self.prompt = QtWidgets.QLabel("Enter a letter below: ", alignment = QtCore.Qt.AlignBottom | QtCore.Qt.AlignCenter)
@@ -27,14 +31,13 @@ class MyApp(QtWidgets.QWidget):
 
     def guess_inputted(self):
         guess_string = str(self.edit.text())
-        guess_length = (len(guess_string))
-        if (guess_length != 1):
+        if (len(guess_string) != 1):
             self.prompt.setText("You can only submit one letter!")
         else:
-            hangman.take_guess(self.edit.text())
+            hangman.process_guess(self.chosen_word, hangman.take_guess(self.edit.text()))
+            
     
 def main():
-
     # Create window constraints, then display window
     app = QtWidgets.QApplication([])
     widget = MyApp()

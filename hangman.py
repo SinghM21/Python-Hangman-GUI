@@ -53,8 +53,6 @@ player = PlayerStats()
 # user makes
 def take_guess(char):
     guess = char
-    if (len(guess) != 1):
-        print("Enter guess again!")
     return guess
 
 def process_guess(word, guessed_char):
