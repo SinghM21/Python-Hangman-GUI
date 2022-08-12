@@ -1,5 +1,7 @@
 import random
 import sys
+from tkinter import Widget
+import hangman
 from PySide6 import QtCore, QtWidgets, QtGui
 from PySide6.QtWidgets import (QLineEdit, QPushButton, QDialog)
 
@@ -24,7 +26,12 @@ class MyApp(QtWidgets.QWidget):
         self.button.clicked.connect(self.guess_inputted)
 
     def guess_inputted(self):
-        self.text.setText(self.edit.text())
+        guess_string = str(self.edit.text())
+        guess_length = (len(guess_string))
+        if (guess_length != 1):
+            self.prompt.setText("You can only submit one letter!")
+        else:
+            hangman.take_guess(self.edit.text())
     
 def main():
 
