@@ -34,8 +34,8 @@ class MyApp(QtWidgets.QWidget):
         if (len(guess_string) != 1):
             self.prompt.setText("You can only submit one letter!")
         else:
-            hangman.process_guess(self.chosen_word, hangman.take_guess(self.edit.text()))
-            
+            result = hangman.process_guess(self.chosen_word, hangman.take_guess(self.edit.text()))
+            print(result)
     
 def main():
     # Create window constraints, then display window
