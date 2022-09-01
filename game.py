@@ -14,6 +14,7 @@ class MyApp(QtWidgets.QWidget):
         self.chosen_word = hangman.pick_word(self.word_list)
 
         # Create widgets
+        self.blankword = QtWidgets.QLabel("_Placeholder_", alignment = QtCore.Qt.AlignCenter)
         self.text = QtWidgets.QLabel("No letter entered", alignment = QtCore.Qt.AlignCenter)
         self.prompt = QtWidgets.QLabel("Enter a letter below: ", alignment = QtCore.Qt.AlignBottom | QtCore.Qt.AlignCenter)
         self.edit = QLineEdit("", alignment = QtCore.Qt.AlignCenter)
@@ -21,6 +22,7 @@ class MyApp(QtWidgets.QWidget):
 
         # Create layout and add widgets
         self.layout = QtWidgets.QVBoxLayout(self)
+        self.layout.addWidget(self.blankword)
         self.layout.addWidget(self.text)
         self.layout.addWidget(self.prompt)
         self.layout.addWidget(self.edit)
