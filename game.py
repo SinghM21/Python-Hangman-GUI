@@ -1,9 +1,7 @@
-import random
 import sys
-from tkinter import Widget
 import hangman
-from PySide6 import QtCore, QtWidgets, QtGui
-from PySide6.QtWidgets import (QLineEdit, QPushButton, QDialog)
+from PySide6 import QtCore, QtWidgets
+from PySide6.QtWidgets import (QLineEdit)
 
 # Class for GUI handling
 class MyApp(QtWidgets.QWidget):
@@ -14,17 +12,21 @@ class MyApp(QtWidgets.QWidget):
         self.chosen_word = hangman.pick_word(self.word_list)
         self.underscored_word = "_" * (len(self.chosen_word) - 1)
 
+        #Gets initial lives and converts it into a string
+        self.lives = hangman.GameStats().player_lives
+        self.lives_counter = "Lives: " + str(self.lives)
+
         # Create widgets
+        self.lives_remaining = QtWidgets.QLabel(self.lives_counter, alignment = QtCore.Qt.AlignBottom | QtCore.Qt.AlignCenter)
         self.blankword = QtWidgets.QLabel(self.underscored_word, alignment = QtCore.Qt.AlignCenter)
-        self.hangman_image = QtWidgets.QLabel("", alignment = QtCore.Qt.AlignCenter)
         self.prompt = QtWidgets.QLabel("Enter a letter below: ", alignment = QtCore.Qt.AlignBottom | QtCore.Qt.AlignCenter)
         self.edit = QLineEdit("", alignment = QtCore.Qt.AlignCenter)
         self.button = QtWidgets.QPushButton("Submit")
 
         # Create layout and add widgets
         self.layout = QtWidgets.QVBoxLayout(self)
+        self.layout.addWidget(self.lives_remaining)
         self.layout.addWidget(self.blankword)
-        self.layout.addWidget(self.hangman_image)
         self.layout.addWidget(self.prompt)
         self.layout.addWidget(self.edit)
         self.layout.addWidget(self.button)
@@ -37,7 +39,6 @@ class MyApp(QtWidgets.QWidget):
         guess_string = str(self.edit.text())
         if (len(guess_string) != 1):
             self.prompt.setText("You can only submit one letter!")
-            self.edit.setText("")
             
         else:
             result = hangman.process_guess(self.chosen_word, hangman.take_guess(self.edit.text()))
@@ -53,6 +54,9 @@ class MyApp(QtWidgets.QWidget):
 
             elif (result == 3):
                 self.prompt.setText("You guessed a wrong letter! Try again!")
+                self.lives = self.lives - 1
+                self.lives_counter = "Lives: " + str(self.lives)
+                self.lives_remaining.setText(self.lives_counter)
             
             elif (result == 4):
                 self.prompt.setText("Game over, you lose!")
@@ -61,6 +65,8 @@ class MyApp(QtWidgets.QWidget):
                 self.underscored_word = hangman.update_guessed_word(self.underscored_word, guess_string, self.chosen_word)
                 self.blankword.setText(self.underscored_word)
                 self.prompt.setText("Congratulations! You guessed the word correctly!")
+
+        self.edit.setText("")
     
 def main():
     # Create window constraints, then display window
