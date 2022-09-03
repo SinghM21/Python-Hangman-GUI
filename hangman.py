@@ -46,9 +46,6 @@ def pick_word(word_list):
     random_num = random.randint(1, word_amount)
     word = word_list[random_num - 1]
 
-    if word == word_list[word_amount - 1]:
-        word = word + ' '
-
     return word
 
 # Update the hidden word covered by underscores 
