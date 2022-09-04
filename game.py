@@ -1,7 +1,9 @@
+from ctypes import alignment
 import sys
 import hangman
 from PySide6 import QtCore, QtWidgets
-from PySide6.QtWidgets import (QLineEdit)
+from PySide6.QtGui import QIcon, QFont, QPixmap
+from PySide6.QtWidgets import QLineEdit, QLabel
 
 # Class for GUI handling
 class MyApp(QtWidgets.QWidget):
@@ -22,11 +24,14 @@ class MyApp(QtWidgets.QWidget):
         self.prompt = QtWidgets.QLabel("Enter a letter below: ", alignment = QtCore.Qt.AlignBottom | QtCore.Qt.AlignCenter)
         self.edit = QLineEdit("", alignment = QtCore.Qt.AlignCenter)
         self.button = QtWidgets.QPushButton("Submit")
+        self.image = QtWidgets.QLabel(alignment = QtCore.Qt.AlignCenter)
+        self.image.setPixmap(QPixmap('Images/hangman_6.png').scaled(90, 108))
 
         # Create layout and add widgets
         self.layout = QtWidgets.QVBoxLayout(self)
         self.layout.addWidget(self.lives_remaining)
         self.layout.addWidget(self.blankword)
+        self.layout.addWidget(self.image)
         self.layout.addWidget(self.prompt)
         self.layout.addWidget(self.edit)
         self.layout.addWidget(self.button)
@@ -57,9 +62,15 @@ class MyApp(QtWidgets.QWidget):
                 self.lives = self.lives - 1
                 self.lives_counter = "Lives: " + str(self.lives)
                 self.lives_remaining.setText(self.lives_counter)
+                select_image = 'Images/hangman_' + str(self.lives)
+                self.image.setPixmap(QPixmap(select_image).scaled(90, 108))
             
             elif (result == 4):
                 self.prompt.setText("Game over, you lose!")
+                self.lives = 0
+                self.lives_counter = "Lives: " + str(self.lives)
+                self.lives_remaining.setText(self.lives_counter)
+                self.image.setPixmap(QPixmap('Images/hangman_0').scaled(90, 108))
             
             else:
                 self.underscored_word = hangman.update_guessed_word(self.underscored_word, guess_string, self.chosen_word)
@@ -73,6 +84,7 @@ def main():
     app = QtWidgets.QApplication([])
     widget = MyApp()
     widget.setWindowTitle("Hangman")
+    widget.setWindowIcon(QIcon('hangman_0.png'))
     widget.resize(800,600)
     widget.show()
 
