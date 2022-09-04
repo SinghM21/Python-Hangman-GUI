@@ -19,7 +19,8 @@ class MyApp(QtWidgets.QWidget):
         self.lives_counter = "Lives: " + str(self.lives)
 
         # Create widgets
-        self.lives_remaining = QtWidgets.QLabel(self.lives_counter, alignment = QtCore.Qt.AlignBottom | QtCore.Qt.AlignCenter)
+        self.lives_remaining = QtWidgets.QLabel(self.lives_counter, alignment = QtCore.Qt.AlignCenter)
+        self.amount_of_characters = QtWidgets.QLabel("The word has {} characters".format(len(self.chosen_word) - 1), alignment = QtCore.Qt.AlignCenter)
         self.blankword = QtWidgets.QLabel(self.underscored_word, alignment = QtCore.Qt.AlignCenter)
         self.prompt = QtWidgets.QLabel("Enter a letter below: ", alignment = QtCore.Qt.AlignBottom | QtCore.Qt.AlignCenter)
         self.edit = QLineEdit("", alignment = QtCore.Qt.AlignCenter)
@@ -30,6 +31,7 @@ class MyApp(QtWidgets.QWidget):
         # Create layout and add widgets
         self.layout = QtWidgets.QVBoxLayout(self)
         self.layout.addWidget(self.lives_remaining)
+        self.layout.addWidget(self.amount_of_characters)
         self.layout.addWidget(self.blankword)
         self.layout.addWidget(self.image)
         self.layout.addWidget(self.prompt)
@@ -54,29 +56,28 @@ class MyApp(QtWidgets.QWidget):
                 self.blankword.setText(self.underscored_word)
                 self.prompt.setText("You guessed a letter correctly! Keep it up!")
 
-            elif (result == 2):
-                self.prompt.setText("You have already guessed this letter")
+            elif (result[0] == 2):
+                self.prompt.setText("You have already guessed the letter '{}'".format(result[1]))
 
-            elif (result == 3):
+            elif (result[0] == 3):
                 self.prompt.setText("You guessed a wrong letter! Try again!")
-                self.lives = self.lives - 1
-                self.lives_counter = "Lives: " + str(self.lives)
+                self.lives_counter = "Lives: " + str(result[1])
                 self.lives_remaining.setText(self.lives_counter)
-                select_image = 'Images/hangman_' + str(self.lives)
+                select_image = 'Images/hangman_' + str(result[1])
                 self.image.setPixmap(QPixmap(select_image).scaled(90, 108))
             
-            elif (result == 4):
-                self.prompt.setText("Game over, you lose!")
-                self.lives = 0
-                self.lives_counter = "Lives: " + str(self.lives)
+            elif (result[0] == 4):
+                self.prompt.setText("Game over, you lose! The word was {}".format(result[1]))
+                self.lives_counter = "Lives: " + str(0)
                 self.lives_remaining.setText(self.lives_counter)
                 self.image.setPixmap(QPixmap('Images/hangman_0').scaled(90, 108))
             
             else:
                 self.underscored_word = hangman.update_guessed_word(self.underscored_word, guess_string, self.chosen_word)
                 self.blankword.setText(self.underscored_word)
-                self.prompt.setText("Congratulations! You guessed the word correctly!")
+                self.prompt.setText("Congratulations! You guessed the word correctly using these characters! {}".format(result[1]))
 
+        #Clear text from guess field after every guess
         self.edit.setText("")
     
 def main():
@@ -84,7 +85,7 @@ def main():
     app = QtWidgets.QApplication([])
     widget = MyApp()
     widget.setWindowTitle("Hangman")
-    widget.setWindowIcon(QIcon('hangman_0.png'))
+    widget.setWindowIcon(QIcon('Images/hangman_0.png'))
     widget.resize(800,600)
     widget.show()
 

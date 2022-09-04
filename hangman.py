@@ -7,6 +7,7 @@ class GameStats:
         self.letters_guessed = []
         self.letters_correct = 0
 
+    #Methods to retrieve and set values
     @property
     def lives(self):
         return self.player_lives
@@ -52,7 +53,7 @@ def pick_word(word_list):
 # displayed to the user when they guess correctly
 def update_guessed_word(current_word, character, word):
     previous_word_state = current_word
-    char = character
+    char = character.lower()
     new_word_state = ""
 
     for x in range(len(previous_word_state)):
@@ -64,6 +65,7 @@ def update_guessed_word(current_word, character, word):
     return new_word_state
 
 player = GameStats()
+
 # Prompts and processes the guesses that the
 # user makes
 def take_guess(char):
@@ -87,6 +89,7 @@ def process_guess(word, guessed_char):
     current_letters_correct = 0
     repeated_letters = 0
 
+    #Check if guess is correct, or if a letter has already been guessed
     for x in range(len(word) - 1):
         if guess == word[x] and guess not in player.letters_guessed:
                 current_letters_correct += 1
@@ -95,31 +98,27 @@ def process_guess(word, guessed_char):
         elif guess in player.letters_guessed:
                 repeated_letters += 1
 
+    #Correct guess
     if current_letters_correct > 0:
-        print("You guessed a letter correctly! Keep it up!")
         result = 1
 
+    #Repeated guess
     elif repeated_letters == len(word) - 1:
-        print("You have already guessed this letter")
-        print("You have guessed these letters {}".format(player.letters_guessed))
-        result = 2
+        result = [2, guessed_char]
 
+    #Wrong guess
     elif current_letters_correct == 0:
         player.letters_guessed.append(guess)
-        print("You guessed a wrong letter! Try again!")
         player.player_lives -= 1
-        print("You now have {} lives".format(player.player_lives))
-        result = 3
+        result = [3, player.player_lives]
     
+    #Player runs out of lives
     if player.player_lives == 0:
-        print("Game over, you lose!")
-        print("The word was", word.lower())
-        result = 4
+        result = [4, word.lower()]
 
+    #Word is guessed
     elif player.letters_correct == (len(word) - 1) - duplicate_chars:
-        print("Congratulations! You guessed the word correctly!")
-        print("You used these letters {} to guess the word: {}".format(player.letters_guessed, word))
-        result = 5
+        result = [5, player.letters_guessed]
 
     return result
 
