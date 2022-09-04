@@ -5,5 +5,5 @@ This is an open-source project developed with the aim of learning a GUI framewor
 
 Tasks:
 - [x] Develop hangman functionality 🤖
-- [ ] Convert to GUI form 💻
+- [x] Convert to GUI form 💻
 - [ ] Make the UI nice and clean 🧹
